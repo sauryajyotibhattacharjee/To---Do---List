@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>To-Do List Application</title>
+ 
+<style>
+	body{
+		background-color:white;
+		padding:2px 250px;
+	}
+	h1{
+		text-align: center;
+		color:red;
+	}
+	#task-form{
+		width:100%;
+		padding:0px 40%;
+	}
+	p{
+		
+		background-color: aqua;
+		color:blue;
+	}
+
+    ul{
+        text-align: center;
+    }
+
+    
+</style>
+</head>
+  <body>
+	
+	<h1>To-Do List</h1>
+	<ul id="task-list">
+		<!-- Tasks will be added dynamically here -->
+	</ul>
+	<form id="task-form">
+		<input type="text" id="task-input" placeholder="Enter task...">
+		<button type="submit">Add Task</button>
+	</form>
+	<script>
+		const taskList = document.getElementById('task-list');
+		const taskForm = document.getElementById('task-form');
+		const taskInput = document.getElementById('task-input');
+
+		// Add a new task to the list
+		taskForm.addEventListener('submit', (event) => {
+			event.preventDefault();
+			const taskText = taskInput.value.trim();
+			if (taskText) {
+				const taskItem = document.createElement('li');
+				taskItem.innerHTML = `
+					<input type="checkbox" class="task-complete">
+					<span class="task-text">${taskText}</span>
+					<button class="task-edit">Edit</button>
+					<button class="task-delete">Delete</button>
+				`;
+				taskList.appendChild(taskItem);
+				taskInput.value = '';
+			}
+		});
+
+		// Edit a task
+		taskList.addEventListener('click', (event) => {
+			if (event.target.classList.contains('task-edit')) {
+				const taskText = event.target.parentNode.querySelector('.task-text');
+				const newTaskText = prompt('Edit task:', taskText.textContent);
+				if (newTaskText) {
+					taskText.textContent = newTaskText;
+				}
+			}
+		});
+
+		// Delete a task
+		taskList.addEventListener('click', (event) => {
+			if (event.target.classList.contains('task-delete')) {
+				event.target.parentNode.remove();
+			}
+		});
+
+		// Mark a task as complete
+		taskList.addEventListener('click', (event) => {
+			if (event.target.classList.contains('task-complete')) {
+				event.target.parentNode.classList.toggle('completed');
+			}
+		});
+	</script>
+	<style>
+		.completed {
+			text-decoration:dotted;
+		}
+	</style>
+  </body>
+</html>
